@@ -1,7 +1,13 @@
 # RedHat ex280
-Red Hat Certified OpenShift Administrator exam (EX280) Overview and Preparation
+Red Hat Certified OpenShift Administrator exam (EX280) Overview and Preparation. 
 
-Sure, here is the Markdown code you can copy and paste for your personal blog:
+Sections:
+
+- [Red Hat OpenShift Platform Architecture](#Red-Hat-OpenShift-Platform-Architecture)
+- [Red Hat OpenShift Editions](#Red-Hat-OpenShift-Editions)
+- [Red Hat OpenShift Installation](#Red-Hat-OpenShift-Installation)
+- [Red Hat Openshift Networking](#red-hat-openshift-networking)
+- [OpenShift Container Troubleshooting](#OpenShift-Container-Troubleshooting)
 
 ## Red Hat OpenShift Platform Architecture
 
@@ -61,7 +67,7 @@ Openshift, as a container Platform, includes many critical components for monito
 
 ![RedHat Openshift Container Platform](openshit_container_platform.jpg)
 
-## Red Hat OpenShift Editions Summary
+## Red Hat OpenShift Editions
 
 After choosing RedHat Openshift as the container orchastrator for your Business Application, the next step is chosing the edition you will implement. Here is a list of alternatives as of Openshift 4.14
 
@@ -107,7 +113,91 @@ After choosing RedHat Openshift as the container orchastrator for your Business 
 - Helps administrators identify and remediate cluster issues using data from the Insights Operator.
 - Provides recommendations and their impacts on the cluster for proactive management.
 
-## Red Hat OpenShift Service on AWS
+## Red Hat OpenShift Installation
 
 For this guideline, I will explain 2 options to install RedHat Openshift. Local and Managed Services (ROSA)
+
+## Red Hat Openshift Networking
+
+![Red Hat Openshift Network design](network_openshift.jpg)
+
+### Software-Defined Networks in OpenShift
+
+#### The Software-Defined Network
+Kubernetes implements software-defined networking (SDN) to manage the network infrastructure of the cluster and user applications. The SDN is a virtual network that encompasses all cluster nodes. The virtual network enables communication between any container or pod inside the cluster. Cluster node processes that Kubernetes pods manage can access the SDN. However, the SDN is not accessible from outside the cluster, nor to regular processes on cluster nodes. With the software-defined networking model, you can manage network services through the abstraction of several networking layers.
+
+#### Managing Network Traffic and Resources
+With the SDN, you can manage the network traffic and network resources programmatically, so that the organization teams can decide how to expose their applications. The SDN implementation creates a model that is compatible with traditional networking practices. It makes pods akin to virtual machines in terms of port allocation, IP address leasing, and reservation.
+
+#### Compatibility with Traditional Networking Practices
+With the SDN design, you do not need to change how application components communicate with each other, which helps to containerize legacy applications. If your application is composed of many services that communicate over the TCP/UDP stack, then this approach still works, because containers in a pod use the same network stack.
+
+## Kubernetes Networking Drivers and Red Hat OpenShift Cluster
+
+### Kubernetes Networking Drivers
+Container Network Interface (CNI) plug-ins provide a common interface between the network provider and the container runtime. CNI defines the specifications for plug-ins that configure network interfaces inside containers. Plug-ins that are written to the specification enable different network providers to control the RHOCP cluster network.
+
+### Red Hat Provided CNI Plug-ins
+Red Hat provides the following CNI plug-ins for an RHOCP cluster:
+
+- **OVN-Kubernetes**: The default plug-in for first-time installations of RHOCP, starting with RHOCP 4.10.
+- **OpenShift SDN**: An earlier plug-in from RHOCP 3.x; it is incompatible with some later features of RHOCP 4.x.
+- **Kuryr**: A plug-in for integration and performance on OpenStack deployments.
+
+Certified CNI plug-ins from other vendors are also compatible with an RHOCP cluster.
+
+### Functionality of CNI Plug-ins
+The SDN uses CNI plug-ins to create Linux namespaces to partition the usage of resources and processes on physical and virtual hosts. With this implementation, containers inside pods can share network resources, such as devices, IP stacks, firewall rules, and routing tables. The SDN allocates a unique routable IP to each pod, so that you can access the pod from any other service in the same network.
+
+### OVN-Kubernetes in OpenShift
+In OpenShift 4.14, OVN-Kubernetes is the default network provider.
+
+OVN-Kubernetes uses Open Virtual Network (OVN) to manage the cluster network. A cluster that uses the OVN-Kubernetes plug-in also runs Open vSwitch (OVS) on each node. OVN configures OVS on each node to implement the declared network configuration.
+
+
+![Red Hat Openshift Network Services](network_openshift2.jpg)
+
+![Red Hat Openshift Network Services](network_openshift3_services.jpg)
+
+![Red Hat Openshift Network Services](network_openshift5.jpg)
+
+
+## OpenShift Container Troubleshooting
+
+### Container Troubleshooting Overview
+Containers are designed to be immutable and ephemeral. A running container must be redeployed when changes are needed or when a new container image is available. However, you can change a running container without redeployment.
+
+Updating a running container is best reserved for troubleshooting problematic containers. Red Hat does not generally recommend editing a running container to fix errors in a deployment. Changes to a running container are not captured in source control, but help to identify the needed corrections to the source code for the container functions. Capture these container updates in version control after you identify the necessary changes. Then, build a new container image and redeploy the application.
+
+Custom alterations to a running container are incompatible with elegant architecture, reliability, and resilience for the environment.
+
+### CLI Troubleshooting Tools
+Administrators use various tools to interact with, inspect, and alter running containers. Administrators can use commands such as `oc get` to gather initial details for a specified resource type. Other commands are available for detailed inspection of a resource, or to update a resource in real time.
+
+**NOTE**: When interacting with the cluster containers, take suitable precautions with actively running components, services, and applications.
+
+Use these tools to validate the functions and environment for a running container:
+
+The `oc` CLI provides the following commands:
+- `oc describe`: Display the details of a resource.
+- `oc edit`: Edit a resource configuration by using the system editor.
+- `oc patch`: Update a specific attribute or field for a resource.
+- `oc replace`: Deploy a new instance of the resource.
+- `oc cp`: Copy files and directories to and from containers.
+- `oc exec`: Execute a command within a specified container.
+- `oc explain`: Display documentation for a specified resource.
+- `oc port-forward`: Configure a port forwarder for a specified container.
+- `oc logs`: Retrieve the logs for a specified container.
+
+Besides supporting the previous `oc` commands, the `oc` CLI adds the following commands for inspecting and troubleshooting running containers:
+- `oc status`: Display the status of the containers in the selected namespace.
+- `oc rsync`: Synchronize files and directories to and from containers.
+- `oc rsh`: Start a remote shell within a specified container.
+
+### Editing Resources
+Troubleshooting and remediation often begin with a phase of inspection and data gathering. When solving issues, the `describe` command can provide helpful details about the running resource, such as the definition of a container and its purpose.
+
+The following example demonstrates use of the `oc describe RESOURCE NAME` command to retrieve information about a pod in the `openshift-dns` namespace:
+```sh
+[user@host ~]$ oc describe pod dns-default-lt13h
 
