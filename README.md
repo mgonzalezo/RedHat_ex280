@@ -80,6 +80,8 @@ After choosing RedHat Openshift as the container orchastrator for your Business 
 - Managed by Red Hat and cloud providers, integrating with cloud infrastructure.
 - Ideal for businesses seeking reliable and managed cluster deployments.
 
+![Managed RedHat Openshift Services](managed_redhat.jpg)
+
 #### Self-Managed Editions
 - Deployable on physical or virtual infrastructure, on-premise or in a public cloud.
 - Offers greater control and flexibility but requires more management responsibility.
@@ -104,4 +106,8 @@ After choosing RedHat Openshift as the container orchastrator for your Business 
 - Available through the Red Hat Hybrid Cloud Console.
 - Helps administrators identify and remediate cluster issues using data from the Insights Operator.
 - Provides recommendations and their impacts on the cluster for proactive management.
+
+## Red Hat OpenShift Service on AWS
+
+For this guideline, I will explain 2 options to install RedHat Openshift. Local and Managed Services (ROSA)
 
