@@ -128,6 +128,8 @@ Kubernetes implements software-defined networking (SDN) to manage the network in
 #### Managing Network Traffic and Resources
 With the SDN, you can manage the network traffic and network resources programmatically, so that the organization teams can decide how to expose their applications. The SDN implementation creates a model that is compatible with traditional networking practices. It makes pods akin to virtual machines in terms of port allocation, IP address leasing, and reservation.
 
+![Red Hat Openshift Network Services](network_openshift2.jpg)
+
 #### Compatibility with Traditional Networking Practices
 With the SDN design, you do not need to change how application components communicate with each other, which helps to containerize legacy applications. If your application is composed of many services that communicate over the TCP/UDP stack, then this approach still works, because containers in a pod use the same network stack.
 
@@ -136,7 +138,6 @@ With the SDN design, you do not need to change how application components commun
 #### Kubernetes Networking Drivers
 Container Network Interface (CNI) plug-ins provide a common interface between the network provider and the container runtime. CNI defines the specifications for plug-ins that configure network interfaces inside containers. Plug-ins that are written to the specification enable different network providers to control the RHOCP cluster network.
 
-![Red Hat Openshift Network Services](network_openshift3_services.jpg)
 
 #### Red Hat Provided CNI Plug-ins
 Red Hat provides the following CNI plug-ins for an RHOCP cluster:
@@ -150,14 +151,12 @@ Certified CNI plug-ins from other vendors are also compatible with an RHOCP clus
 #### Functionality of CNI Plug-ins
 The SDN uses CNI plug-ins to create Linux namespaces to partition the usage of resources and processes on physical and virtual hosts. With this implementation, containers inside pods can share network resources, such as devices, IP stacks, firewall rules, and routing tables. The SDN allocates a unique routable IP to each pod, so that you can access the pod from any other service in the same network.
 
-![Red Hat Openshift Network Services](network_openshift2.jpg)
-
+![Red Hat Openshift Network Services](network_openshift3_services.jpg)
 
 #### OVN-Kubernetes in OpenShift
 In OpenShift 4.14, OVN-Kubernetes is the default network provider.
 
 OVN-Kubernetes uses Open Virtual Network (OVN) to manage the cluster network. A cluster that uses the OVN-Kubernetes plug-in also runs Open vSwitch (OVS) on each node. OVN configures OVS on each node to implement the declared network configuration.
-
 
 ![Red Hat Openshift Network Services](network_openshift5.jpg)
 
@@ -230,20 +229,25 @@ The exam is designed for:
 I created this blog to talk about certain topics I found difficult to practice due to limited online resources. For General Exam details and a broad range of core concepts I recommend the following:
 
 1. RedHat
-  - Red Hat OpenShift Administration I: Containers & Kubernetes (DO180) course  https://www.redhat.com/en/services/training/red-hat-openshift-administration-i-operating-a-production-cluster
-  - Red Hat OpenShift Administration II: Operating a Production Kubernetes Cluster (DO280) course https://www.redhat.com/en/services/training/red-hat-openshift-administration-ii-configuring-a-production-cluster
+  - Red Hat OpenShift Administration I: Containers & Kubernetes (DO180) course [Link here](https://www.redhat.com/en/services/training/red-hat-openshift-administration-i-operating-a-production-cluster)
+ 
+  - Red Hat OpenShift Administration II: Operating a Production Kubernetes Cluster (DO280) course   [Link here](https://www.redhat.com/en/services/training/red-hat-openshift-administration-ii-configuring-a-production-cluster) 
+
+Official documentation offered by Red Hat. Includes both Theory and detailed Hands-on exercises. Totally recommended.
 
 2. Youtube
-  - Openshift Administration series - Tech Tejendra - https://www.youtube.com/watch?v=ElhpkEaAM5Y&list=PLnFCwVWiQz4nFE9X6ADRTtBvZDIrIAL1u 
-  - Openshift series - Devops - https://www.youtube.com/watch?v=aJqyGdv7h68&list=PLt-VlKXeX8qvgkn5BG26zfXYBIuiwtHqq
+  - Openshift Administration series - [Tech Tejendra](https://www.youtube.com/watch?v=ElhpkEaAM5Y&list=PLnFCwVWiQz4nFE9X6ADRTtBvZDIrIAL1u)
+ 
+  - Openshift series - [Devops](https://www.youtube.com/watch?v=aJqyGdv7h68&list=PLt-VlKXeX8qvgkn5BG26zfXYBIuiwtHqq)
+  
 
-  Hands on Youtube series to follow along with CRC. Recommended and cover 70-80% Exam topics
+  Hands on Youtube series to follow along with CRC. Also recommended and In my opinion, together cover 50-60% Exam topics
 
 3. Blog
 
   - https://www.enoks.fr/openshift/EX280/#manage-openshift-container-platform 
 
-  Detailed Enok Doc with Openshift EX280 topics and examples. Great for last minute review.
+  Detailed Enok Doc with Openshift EX280 topics and examples. Great for last minute review and learn some services you won't find in Youtube series.
 
 ### Container Troubleshooting Overview
 
@@ -276,11 +280,13 @@ Besides supporting the previous `oc` commands, the `oc` CLI adds the following c
 - `oc rsync`: Synchronize files and directories to and from containers.
 - `oc rsh`: Start a remote shell within a specified container.
 
-### Practice
+### Practice Exams
 
-Find the following Practice Exam for HTPasswd and User & Group and Quota management for practice
+Find the following Practice Exams to review core concepts and challenge yourself while preparing for the exam:
 
-#### Set Up htpasswd as the Identity Provider and Add Users and Permissions
+#### Practice Exam LVL1
+
+##### Set Up htpasswd as the Identity Provider and Add Users and Permissions
 
 1. Set up the htpasswd file.
 2. Verify the file contents.
@@ -313,7 +319,7 @@ Find the following Practice Exam for HTPasswd and User & Group and Quota managem
 29. Log in as `root`.
 30. Remove the `kubeadmin` user from the cluster.
 
-#### Role-Based Access and Groups
+##### Role-Based Access and Groups
 
 31. Create a project called `snacks`.
 32. Create a group called `group1`.
@@ -323,8 +329,40 @@ Find the following Practice Exam for HTPasswd and User & Group and Quota managem
 36. Assign the `getpods` role to `delta`, allowing the user to get pod information from the `snacks` project.
 37. Verify it worked.
 
-#### Quotas and Resource Limits
+##### Quotas and Resource Limits
 
 38. Download the quota and resource limit templates, modify them to limit cpu and memory for `snacks` project.
 
+#### Practice Exam LVL2
 
+1. Create a network policy to only allow ingress traffic from an specific namespace, pod label and port. Refer to below YAML file for reference
+
+```
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+spec:
+  podSelector:
+    matchLabels:
+      deployment: hello
+  ingress:
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            network: different-namespace
+        podSelector:
+          matchLabels:
+            deployment: sample-app
+      ports:
+      - port: 8080
+        protocol: TCP
+
+```
+2. Create a network policy that allows traffic to the hello pod via the exposed route
+
+3. Create cluster logs to upload for support
+
+## Next Steps
+
+Thank you for taking the time to read this summary and tips on the Red Hat EX280 exam! 📚 As with any hands-on exam, the key is consistent practice and exploring different ways to solve problems or deliver solutions. In my experience, that's the best way to truly understand and master a concept. Keep rocking and happy learning! 🚀💡
+
+![Red Hat OpenShift Administrator certificate](certificate.jpg)
