@@ -7,7 +7,7 @@ Sections:
 - [Red Hat OpenShift Editions](#Red-Hat-OpenShift-Editions)
 - [Red Hat OpenShift Installation](#Red-Hat-OpenShift-Installation)
 - [Red Hat Openshift Networking](#red-hat-openshift-networking)
-- [OpenShift Container Troubleshooting](#OpenShift-Container-Troubleshooting)
+- [Red Hat Certified OpenShift Administrator exam](#Red-Hat-Certified-OpenShift-Administrator-exam)
 
 ## Red Hat OpenShift Platform Architecture
 
@@ -113,9 +113,8 @@ After choosing RedHat Openshift as the container orchastrator for your Business 
 - Helps administrators identify and remediate cluster issues using data from the Insights Operator.
 - Provides recommendations and their impacts on the cluster for proactive management.
 
-## Red Hat OpenShift Installation
 
-For this guideline, I will explain 2 options to install RedHat Openshift. Local and Managed Services (ROSA)
+
 
 ## Red Hat Openshift Networking
 
@@ -132,12 +131,14 @@ With the SDN, you can manage the network traffic and network resources programma
 #### Compatibility with Traditional Networking Practices
 With the SDN design, you do not need to change how application components communicate with each other, which helps to containerize legacy applications. If your application is composed of many services that communicate over the TCP/UDP stack, then this approach still works, because containers in a pod use the same network stack.
 
-## Kubernetes Networking Drivers and Red Hat OpenShift Cluster
+### Kubernetes Networking Drivers and Red Hat OpenShift Cluster
 
-### Kubernetes Networking Drivers
+#### Kubernetes Networking Drivers
 Container Network Interface (CNI) plug-ins provide a common interface between the network provider and the container runtime. CNI defines the specifications for plug-ins that configure network interfaces inside containers. Plug-ins that are written to the specification enable different network providers to control the RHOCP cluster network.
 
-### Red Hat Provided CNI Plug-ins
+![Red Hat Openshift Network Services](network_openshift3_services.jpg)
+
+#### Red Hat Provided CNI Plug-ins
 Red Hat provides the following CNI plug-ins for an RHOCP cluster:
 
 - **OVN-Kubernetes**: The default plug-in for first-time installations of RHOCP, starting with RHOCP 4.10.
@@ -146,25 +147,106 @@ Red Hat provides the following CNI plug-ins for an RHOCP cluster:
 
 Certified CNI plug-ins from other vendors are also compatible with an RHOCP cluster.
 
-### Functionality of CNI Plug-ins
+#### Functionality of CNI Plug-ins
 The SDN uses CNI plug-ins to create Linux namespaces to partition the usage of resources and processes on physical and virtual hosts. With this implementation, containers inside pods can share network resources, such as devices, IP stacks, firewall rules, and routing tables. The SDN allocates a unique routable IP to each pod, so that you can access the pod from any other service in the same network.
 
-### OVN-Kubernetes in OpenShift
+![Red Hat Openshift Network Services](network_openshift2.jpg)
+
+
+#### OVN-Kubernetes in OpenShift
 In OpenShift 4.14, OVN-Kubernetes is the default network provider.
 
 OVN-Kubernetes uses Open Virtual Network (OVN) to manage the cluster network. A cluster that uses the OVN-Kubernetes plug-in also runs Open vSwitch (OVS) on each node. OVN configures OVS on each node to implement the declared network configuration.
 
 
-![Red Hat Openshift Network Services](network_openshift2.jpg)
-
-![Red Hat Openshift Network Services](network_openshift3_services.jpg)
-
 ![Red Hat Openshift Network Services](network_openshift5.jpg)
 
+## Red Hat OpenShift Installation
 
-## OpenShift Container Troubleshooting
+For this guideline, I will explain local RedHat Openshift installation using CRC (CodeReadyContainers). For Managed services (e.g ROSA) please refer to my previous blog entry: 
+
+CodeReady Containers:
+
+1. Brings a minimal Openshift 4 cluster to your laptop/Desktop for developing and testing.
+2. The CLI makes it easy to install and interact with the VM. It also allows for easy configuration.
+3. Since CRC is ephemeral, it's intended only for learning purposes. Refrain from running it in production ;)
+
+### Requirements
+
+1. vCPU -> At least 4vCPUs
+2. Memory -> At least 9GBi of free memory
+3. Storage -> At least 35GB of free storage
+4. RedHat Openshift Console Account -> https://console.redhat.com/openshift
+5. CRC pull secret -> Also called: Red Hat Openshift Local Secret. You can download this from item 4. Refer to below image for further details
+
+
+
+![Red Hat OpenShift Local Secret](pull_secret.jpg)
+
+### Steps
+
+Note: I will show the setps for a Windows OS. Please refer to official documentation for Linux/MAC OS
+
+1. Download latest CRC release https://cloud.redhat.com/openshift/install/crc/installer-provisioned
+2. (optional) add the path to environment variables
+3. Go to the CRC folder and run: `crc setup`
+4. When requested, paste the CRC pull secret code mentioned in the requirements section.
+5. Once completed the setup, execute the `crc start`
+6. Wait until installation is commpleted. Credentials information will be displayed.
+7. In case you need to collect login information, use `crc console --show-credentials`
+8. If you need to access UI, use `crc console`
+9. OCP cluster is ready to use!!
+
+CRC Setup
+![CRC setup](crc_install.jpg)
+
+
+CRC start completed and cluster ready to use
+
+![Red Hat OpenShift Local Secret](crc_finish.jpg)
+
+
+## Red Hat Certified OpenShift Administrator exam
+
+### General Information
+
+The **Red Hat Certified OpenShift Administrator exam (EX280)** 🛠️ tests your ability to set up, configure, and manage applications on the Red Hat OpenShift Container Platform 🚀, a cloud-based system for running applications in containers 📦.
+
+Passing this exam makes you a **certified Red Hat OpenShift Administrator** 🏅 and helps you on your way to becoming a **Red Hat Certified Architect (RHCA)** 🌟.
+
+The exam is designed for:
+
+- **System and Software Architects** 🖥️ needing to understand OpenShift features and functionality.
+- **System Administrators** 👩‍💻 setting up initial OpenShift clusters.
+- **Cluster Operators** 🔧 handling ongoing maintenance of OpenShift clusters.
+- **Site Reliability Engineers** 🛡️ troubleshooting and maintaining OpenShift clusters.
+- **System Administrators** 💼 wanting to showcase their OpenShift skills.
+- **Red Hat Certified Engineers** 🎓 aiming to become RHCA.
+- **System Administrators or Developers** 👨‍💻 working in DevOps environments with OpenShift.
+
+
+### Recommended Links
+
+I created this blog to talk about certain topics I found difficult to practice due to limited online resources. For General Exam details and a broad range of core concepts I recommend the following:
+
+1. RedHat
+  - Red Hat OpenShift Administration I: Containers & Kubernetes (DO180) course  https://www.redhat.com/en/services/training/red-hat-openshift-administration-i-operating-a-production-cluster
+  - Red Hat OpenShift Administration II: Operating a Production Kubernetes Cluster (DO280) course https://www.redhat.com/en/services/training/red-hat-openshift-administration-ii-configuring-a-production-cluster
+
+2. Youtube
+  - Openshift Administration series - Tech Tejendra - https://www.youtube.com/watch?v=ElhpkEaAM5Y&list=PLnFCwVWiQz4nFE9X6ADRTtBvZDIrIAL1u 
+  - Openshift series - Devops - https://www.youtube.com/watch?v=aJqyGdv7h68&list=PLt-VlKXeX8qvgkn5BG26zfXYBIuiwtHqq
+
+  Hands on Youtube series to follow along with CRC. Recommended and cover 70-80% Exam topics
+
+3. Blog
+
+  - https://www.enoks.fr/openshift/EX280/#manage-openshift-container-platform 
+
+  Detailed Enok Doc with Openshift EX280 topics and examples. Great for last minute review.
 
 ### Container Troubleshooting Overview
+
 Containers are designed to be immutable and ephemeral. A running container must be redeployed when changes are needed or when a new container image is available. However, you can change a running container without redeployment.
 
 Updating a running container is best reserved for troubleshooting problematic containers. Red Hat does not generally recommend editing a running container to fix errors in a deployment. Changes to a running container are not captured in source control, but help to identify the needed corrections to the source code for the container functions. Capture these container updates in version control after you identify the necessary changes. Then, build a new container image and redeploy the application.
@@ -194,10 +276,55 @@ Besides supporting the previous `oc` commands, the `oc` CLI adds the following c
 - `oc rsync`: Synchronize files and directories to and from containers.
 - `oc rsh`: Start a remote shell within a specified container.
 
-### Editing Resources
-Troubleshooting and remediation often begin with a phase of inspection and data gathering. When solving issues, the `describe` command can provide helpful details about the running resource, such as the definition of a container and its purpose.
+### Practice
 
-The following example demonstrates use of the `oc describe RESOURCE NAME` command to retrieve information about a pod in the `openshift-dns` namespace:
-```sh
-[user@host ~]$ oc describe pod dns-default-lt13h
+Find the following Practice Exam for HTPasswd and User & Group and Quota management for practice
+
+#### Set Up htpasswd as the Identity Provider and Add Users and Permissions
+
+1. Set up the htpasswd file.
+2. Verify the file contents.
+3. Set up the rest of the users and their passwords.
+4. Verify the file contents.
+5. Check if there's an existing HTPasswd Secret file.
+6. Delete the `htpass-secret` file.
+7. Create the secret from the htpasswd file.
+8. Download the HTPasswd Custom Resource.
+9. Open the file.
+10. Under `identityProviders`, replace `my_htpasswd_provider` with `users.htpassword`.
+11. Save and exit the file by pressing `Escape` followed by `:wq`.
+12. Apply the changes.
+13. Log in as the `root` user.
+14. Verify you're logged in as `root`.
+15. Log in as the `alpha` user.
+16. Verify you're logged in as `alpha`.
+17. Log in as the `beta` user.
+18. Verify you're logged in as `beta`.
+19. Log in as the `gamma` user.
+20. Verify you're logged in as `gamma`.
+21. Log in as the `delta` user.
+22. Verify you're logged in as `delta`.
+23. Log in as `kubeadmin`.
+24. Create the `NewProject` project.
+25. Give `alpha` admin permissions to the `NewProject` project.
+26. Give `beta` and `gamma` edit permissions to the `NewProject` project.
+27. Give `delta` basic user permissions to the `NewProject` project.
+28. Give the `root` user cluster admin permissions.
+29. Log in as `root`.
+30. Remove the `kubeadmin` user from the cluster.
+
+#### Role-Based Access and Groups
+
+31. Create a project called `snacks`.
+32. Create a group called `group1`.
+33. Add `alpha`, `beta`, and `gamma` to the `group1` group.
+34. Grant admin access to the `group1` group for the project `snacks`.
+35. Create a custom `getpods` role.
+36. Assign the `getpods` role to `delta`, allowing the user to get pod information from the `snacks` project.
+37. Verify it worked.
+
+#### Quotas and Resource Limits
+
+38. Download the quota and resource limit templates, modify them to limit cpu and memory for `snacks` project.
+
 
