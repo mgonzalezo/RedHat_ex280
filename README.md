@@ -162,7 +162,7 @@ OVN-Kubernetes uses Open Virtual Network (OVN) to manage the cluster network. A 
 
 ## Red Hat OpenShift Installation
 
-For this guideline, I will explain local RedHat Openshift installation using CRC (CodeReadyContainers). For Managed services (e.g ROSA) please refer to my previous blog entry: 
+For this guideline, I will explain local RedHat Openshift installation using CRC (CodeReadyContainers). For Managed services (e.g ROSA) please refer to my previous blog entry: [Building your first ROSA🌹 with Red Hat and AWS](https://dev.to/aws-builders/building-your-first-rosa-with-red-hat-and-aws-3jjd) 
 
 CodeReady Containers:
 
